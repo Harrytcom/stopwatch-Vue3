@@ -7,19 +7,19 @@
         </p>
         <span :class="{'stopwatch__bar': true, 'white-bg': running}"></span>
         <div class="stopwatch__controls">
-          <button class="stopwatch__start" @click="start" :v-show="!running || !paused" :disabled="running">
-            <svg width="17"
+          <button class="stopwatch__start" @click="start" v-if="!running || paused" :disabled="running">
+            <svg width="20"
               height="20"
-              viewBox="0 0 17 20"
+              viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <path d="M0 20V0L17 10L0 20Z" :fill="running ? '#fff' : '#9e9e9e'" />
             </svg>
           </button>
-          <button class="stopwatch__pause" @click="pause" v-show="running && !paused" >
-            <svg width="10" 
+          <button class="stopwatch__pause" @click="pause" v-show="running && !paused">
+            <svg width="20" 
               height="20" 
-              viewBox="0 0 10 20" 
+              viewBox="0 0 20 20" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg">
               <rect x="7" width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'"/>
