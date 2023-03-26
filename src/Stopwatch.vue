@@ -2,10 +2,10 @@
   <div class="container">
     <div class="stopwatch-container">
       <div class="stopwatch">
-        <p class="stopwatch__timer">
+        <p :class="{stopwatch__timer: true, 'is-active': running}">
           {{ formatTime }}
         </p>
-        <span class="stopwatch__bar"></span>
+        <span :class="{'stopwatch__bar': true, 'white-bg': running}"></span>
         <div class="stopwatch__controls">
           <button class="stopwatch__start" @click="start" :v-show="!running || !paused" :disabled="running">
             <svg width="17"
@@ -13,17 +13,17 @@
               viewBox="0 0 17 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 20V0L17 10L0 20Z" fill="#9e9e9e"/>
+              <path d="M0 20V0L17 10L0 20Z" :fill="running ? '#fff' : '#9e9e9e'" />
             </svg>
           </button>
-          <button class="stopwatch__pause" @click="pause" v-show="running && !paused">
+          <button class="stopwatch__pause" @click="pause" v-show="running && !paused" >
             <svg width="10" 
               height="20" 
               viewBox="0 0 10 20" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg">
-              <rect x="7" width="3" height="20" fill="#9e9e9e"/>
-              <rect width="3" height="20" fill="#9e9e9e"/>
+              <rect x="7" width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'"/>
+              <rect width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'"/>
             </svg>
           </button>
           <button class="stopwatch__stop" @click="stop">
@@ -32,15 +32,15 @@
               viewBox="0 0 20 20" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg">
-              <rect width="20" height="20" fill="#9e9e9e"/>
+              <rect width="20" height="20" :fill="running ? '#ffffff' : '#9e9e9e'"/>
             </svg>
           </button>
         </div>
       </div>
       <button class="add-btn" @click="addStopwatch">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8.5" width="3" height="20" fill="#9E9E9E"/>
-          <rect y="11.5" width="3" height="20" transform="rotate(-90 0 11.5)" fill="#9E9E9E"/>
+          <rect x="8.5" width="3" height="20" fill="#9e9e9e" />
+          <rect y="11.5" width="3" height="20" transform="rotate(-90 0 11.5)" fill="#9e9e9e" />
         </svg>
       </button>
     </div>
@@ -78,7 +78,6 @@
       },
       addStopwatch(stopwatch) {
         this.stopwatches.push(stopwatch)
-        console.log('123');
       },
       removeStopwatch(stopwatch) {
         this.stopwatches = this.stopwatches.filter(el => el.id !== stopwatch.id)
@@ -168,9 +167,25 @@
     color: #fff;
   }
 
-  .not-active {
-    color: #9e9e9e;
+  .white-bg {
+    background-color: #fff;
   }
+
+  .stopwatch__controls button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: medium;
+    font-weight: inherit;
+    line-height: normal;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+  }
+
 
   .add-btn {
     background-color: var(--secondary-bg-color);
