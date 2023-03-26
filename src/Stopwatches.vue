@@ -30,37 +30,3 @@ export default {
   }
 }
 </script>
-<!-- 
-
-<template>
-  <div class="stopwatches-container">
-    <h1>Stopwatches</h1>
-    <div class="stopwatches">
-      <stopwatch v-for="(stopwatch, index) in stopwatches" :key="index" :index="index" @remove="removeStopwatch" />
-    </div>
-    <button @click="addStopwatch">Add Stopwatch</button>
-  </div>
-</template>
-
-<script>
-import Stopwatch from './Stopwatch.vue'
-
-export default {
-  components: {
-    Stopwatch
-  },
-  data() {
-    return {
-      stopwatches: []
-    }
-  },
-  methods: {
-    addStopwatch() {
-      this.stopwatches.push({})
-    },
-    removeStopwatch(index) {
-      this.stopwatches.splice(index, 1)
-    }
-  }
-}
-</script> -->

@@ -2,37 +2,27 @@
   <div class="container">
     <div class="stopwatch-container">
       <div class="stopwatch">
-        <p :class="{stopwatch__timer: true, 'is-active': running}">
-          {{ formatTime }}
-        </p>
-        <span :class="{'stopwatch__bar': true, 'white-bg': running}"></span>
+        <div :class="{ 'stopwatch__timer': true, 'is-active': running }">
+          <div v-if="time < 60000">{{ formatSeconds }}</div>
+          <div v-else-if="time < 3600000">{{ formatMinutes }}</div>
+          <div v-else>{{ formatHours }}</div>
+        </div>
+        <span :class="{ 'stopwatch__bar': true, 'white-bg': running }"></span>
         <div class="stopwatch__controls">
           <button class="stopwatch__start" @click="start" v-if="!running || paused" :disabled="running">
-            <svg width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 20V0L17 10L0 20Z" :fill="running ? '#fff' : '#9e9e9e'" />
             </svg>
           </button>
           <button class="stopwatch__pause" @click="pause" v-show="running && !paused">
-            <svg width="20" 
-              height="20" 
-              viewBox="0 0 20 20" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg">
-              <rect x="7" width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'"/>
-              <rect width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'"/>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="7" width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'" />
+              <rect width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'" />
             </svg>
           </button>
           <button class="stopwatch__stop" @click="stop">
-            <svg width="20" 
-              height="20" 
-              viewBox="0 0 20 20" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg">
-              <rect width="20" height="20" :fill="running ? '#ffffff' : '#9e9e9e'"/>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="20" height="20" :fill="running ? '#ffffff' : '#9e9e9e'" />
             </svg>
           </button>
         </div>
@@ -48,78 +38,90 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        running: false,
-        paused: false,
-        time: 0,
-        stopwatches: [],
-      }
+export default {
+  data() {
+    return {
+      running: false,
+      paused: false,
+      time: 0,
+      stopwatches: [],
+    };
+  },
+  methods: {
+    start() {
+      this.running = true;
+      this.paused = false;
+      this.timer = setInterval(() => {
+        this.time += 10;
+      }, 10);
     },
-    methods: {
-      start() {
-        this.running = true
-        this.paused = false
-        this.timer = setInterval(() => {
-          this.time += 10
-        }, 10)
-      },
-      pause() {
-        this.running = false
-        this.paused = true
-        clearInterval(this.timer)
-      },
-      stop() {
-        this.running = false
-        this.paused = false
-        clearInterval(this.timer)
-        this.time = 0
-      },
-      addStopwatch(stopwatch) {
-        this.stopwatches.push(stopwatch)
-      },
-      removeStopwatch(stopwatch) {
-        this.stopwatches = this.stopwatches.filter(el => el.id !== stopwatch.id)
-      }
+    pause() {
+      this.running = false;
+      this.paused = true;
+      clearInterval(this.timer);
     },
-    computed: {
-      formatTime() {
-        let hours = Math.floor(this.time / 3600000)
-        let minutes = Math.floor(this.time / 60000) % 60
-        let seconds = Math.floor(this.time / 1000) % 60
-  
-        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-      }
-    }
-  }
+    stop() {
+      this.running = false;
+      this.paused = false;
+      clearInterval(this.timer);
+      this.time = 0;
+    },
+    addStopwatch(stopwatch) {
+      this.stopwatches.push(stopwatch);
+    },
+    removeStopwatch(stopwatch) {
+      this.stopwatches = this.stopwatches.filter((el) => el.id !== stopwatch.id);
+    },
+  },
+  computed: {
+    formatSeconds() {
+      let seconds = Math.floor(this.time / 1000);
+      return seconds.toString().padStart(2, "0");
+    },
+    formatMinutes() {
+      let minutes = Math.floor(this.time / 60000);
+      let seconds = Math.floor((this.time % 60000) / 1000);
+      return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    },
+    formatHours() {
+      let hours = Math.floor(this.time / 3600000);
+      let minutes = Math.floor((this.time % 3600000) / 60000);
+      let seconds = Math.floor((this.time % 60000) / 1000);
+      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    },
+  },
+};
 </script>
 
 <style>
-@font-face {
-  font-family: 'Gotham Pro';
-  font-weight: 400;
-  font-style: normal;
-  src: url(./fonts/GothamPro.woff2) format('woff2'),
-       url(./fonts/GothamPro.woff) format('woff'),
-       url(./fonts/GothamPro.ttf) format('truetype');
+  @font-face {
+    font-family: 'Gotham Pro';
+    font-weight: 400;
+    font-style: normal;
+    src: url(./fonts/GothamPro.woff2) format('woff2'),
+         url(./fonts/GothamPro.woff) format('woff'),
+         url(./fonts/GothamPro.ttf) format('truetype');
   }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-  :root {
-    --primary-bg-color:  #353638;
-    --secondary-bg-color: #696969;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
+
+  :root {
+    --primary-bg-color: #353638;
+    --secondary-bg-color: #696969;
+    --primary-color: #9e9e9e;
+    --accent-color: #fff;
+  }
+
   .container {
     background-color: var(--primary-bg-color);
-    
   }
+
   .stopwatch-container {
-    font-family: 'Gotham Pro', sans-serif;
+    font-family: 'Gotham Pro', sans-serif, monospace;
     font-weight: 400;
     font-size: 22px;
     line-height: 21px;
@@ -145,30 +147,36 @@
 
   .stopwatch {
     background-color: var(--secondary-bg-color);
-    /* width: 225px; */
+    color: var(--primary-color);
     height: 120px;
-    color: #9e9e9e;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-evenly;
     align-items: center;
   }
+
   .stopwatch__bar {
     height: 1px;
     width: 100%;
-    background-color: #9e9e9e;
+    background-color: var(--primary-color);
   }
+
+  .stopwatch__timer {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+
   .stopwatch__controls {
     display: flex;
     gap: 50px;
   }
 
   .is-active {
-    color: #fff;
+    color: var(--accent-color);
   }
 
   .white-bg {
-    background-color: #fff;
+    background-color: var(--accent-color);
   }
 
   .stopwatch__controls button {
@@ -185,7 +193,6 @@
     text-decoration: none;
     text-transform: none;
   }
-
 
   .add-btn {
     background-color: var(--secondary-bg-color);
