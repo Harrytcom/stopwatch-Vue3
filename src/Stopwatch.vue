@@ -1,50 +1,46 @@
 <template>
-  <div class="container">
-    <div class="stopwatch-container">
-      <div class="stopwatch">
-        <div :class="{ 'stopwatch__timer': true, 'is-active': running }">
-          <div v-if="time < 60000">{{ formatSeconds }}</div>
-          <div v-else-if="time < 3600000">{{ formatMinutes }}</div>
-          <div v-else>{{ formatHours }}</div>
-        </div>
-        <span :class="{ 'stopwatch__bar': true, 'white-bg': running }"></span>
-        <div class="stopwatch__controls">
-          <button class="stopwatch__start" @click="start" v-if="!running || paused" :disabled="running">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 20V0L17 10L0 20Z" :fill="running ? '#fff' : '#9e9e9e'" />
-            </svg>
-          </button>
-          <button class="stopwatch__pause" @click="pause" v-show="running && !paused">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="7" width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'" />
-              <rect width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'" />
-            </svg>
-          </button>
-          <button class="stopwatch__stop" @click="stop">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="20" height="20" :fill="running ? '#ffffff' : '#9e9e9e'" />
-            </svg>
-          </button>
-        </div>
+    <div class="stopwatch">
+      <div :class="{ 'stopwatch__timer': true, 'is-active': running }">
+        <div v-if="time < 60000">{{ formatSeconds }}</div>
+        <div v-else-if="time < 3600000">{{ formatMinutes }}</div>
+        <div v-else>{{ formatHours }}</div>
       </div>
-      <button class="add-btn" @click="addStopwatch">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8.5" width="3" height="20" fill="#9e9e9e" />
-          <rect y="11.5" width="3" height="20" transform="rotate(-90 0 11.5)" fill="#9e9e9e" />
-        </svg>
-      </button>
+      <span :class="{ 'stopwatch__bar': true, 'white-bg': running }"></span>
+      <div class="stopwatch__controls">
+        <button class="stopwatch__start" @click="start" v-if="!running || paused" :disabled="running">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 20V0L17 10L0 20Z" :fill="running ? '#fff' : '#9e9e9e'" />
+          </svg>
+        </button>
+        <button class="stopwatch__pause" @click="pause" v-show="running && !paused">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="7" width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'" />
+            <rect width="3" height="20" :fill="running ? '#fff' : '#9e9e9e'" />
+          </svg>
+        </button>
+        <button class="stopwatch__stop" @click="stop">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="20" height="20" :fill="running ? '#ffffff' : '#9e9e9e'" />
+          </svg>
+        </button>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
+  props: {
+    index: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       running: false,
       paused: false,
       time: 0,
-      stopwatches: [],
+      timer: null,
     };
   },
   methods: {
@@ -65,12 +61,6 @@ export default {
       this.paused = false;
       clearInterval(this.timer);
       this.time = 0;
-    },
-    addStopwatch(stopwatch) {
-      this.stopwatches.push(stopwatch);
-    },
-    removeStopwatch(stopwatch) {
-      this.stopwatches = this.stopwatches.filter((el) => el.id !== stopwatch.id);
     },
   },
   computed: {
@@ -114,35 +104,6 @@ export default {
     --secondary-bg-color: #696969;
     --primary-color: #9e9e9e;
     --accent-color: #fff;
-  }
-
-  .container {
-    background-color: var(--primary-bg-color);
-  }
-
-  .stopwatch-container {
-    font-family: 'Gotham Pro', sans-serif, monospace;
-    font-weight: 400;
-    font-size: 22px;
-    line-height: 21px;
-    display: grid;
-    grid-template-columns: 220px;
-    grid-template-rows: auto;
-    gap: 50px;
-    justify-content: center;
-    padding: 70px 0 80px;
-  }
-
-  @media (min-width: 767.98px) {
-    .stopwatch-container {
-      grid-template-columns: repeat(2, 220px);
-    }
-  }
-
-  @media (min-width: 1023.98px) {
-    .stopwatch-container {
-      grid-template-columns: repeat(3, 220px);
-    }
   }
 
   .stopwatch {
