@@ -5,16 +5,12 @@
 </template>
 
 <script>
-import Stopwatches from './Stopwatches.vue';
-// import Stopwatch from './Stopwatch.vue';
-// import addStopwatch from './addStopwatch.vue';
+import Stopwatches from './Stopwatches.vue'
 
 export default {
-    components: { 
-      Stopwatches,
-      // Stopwatch,
-      // addStopwatch
-    }
+  components: {
+    Stopwatches
+  }
 }
 </script>
 

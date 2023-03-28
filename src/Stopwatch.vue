@@ -29,58 +29,52 @@
 
 <script>
 export default {
-  props: {
-    index: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
     return {
       running: false,
       paused: false,
       time: 0,
       timer: null,
-    };
+    }
   },
   methods: {
     start() {
-      this.running = true;
-      this.paused = false;
+      this.running = true
+      this.paused = false
       this.timer = setInterval(() => {
-        this.time += 10;
-      }, 10);
+        this.time += 10
+      }, 10)
     },
     pause() {
-      this.running = false;
-      this.paused = true;
-      clearInterval(this.timer);
+      this.running = false
+      this.paused = true
+      clearInterval(this.timer)
     },
     stop() {
-      this.running = false;
-      this.paused = false;
-      clearInterval(this.timer);
-      this.time = 0;
+      this.running = false
+      this.paused = false
+      clearInterval(this.timer)
+      this.time = 0
     },
   },
   computed: {
     formatSeconds() {
-      let seconds = Math.floor(this.time / 1000);
-      return seconds.toString().padStart(2, "0");
+      let seconds = Math.floor(this.time / 1000)
+      return seconds.toString().padStart(2, "0")
     },
     formatMinutes() {
-      let minutes = Math.floor(this.time / 60000);
-      let seconds = Math.floor((this.time % 60000) / 1000);
-      return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      let minutes = Math.floor(this.time / 60000)
+      let seconds = Math.floor((this.time % 60000) / 1000)
+      return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
     },
     formatHours() {
-      let hours = Math.floor(this.time / 3600000);
-      let minutes = Math.floor((this.time % 3600000) / 60000);
-      let seconds = Math.floor((this.time % 60000) / 1000);
-      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      let hours = Math.floor(this.time / 3600000)
+      let minutes = Math.floor((this.time % 3600000) / 60000)
+      let seconds = Math.floor((this.time % 60000) / 1000)
+      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
     },
   },
-};
+}
 </script>
 
 <style>
@@ -120,11 +114,6 @@ export default {
     height: 1px;
     width: 100%;
     background-color: var(--primary-color);
-  }
-
-  .stopwatch__timer {
-    font-feature-settings: "tnum";
-    font-variant-numeric: tabular-nums;
   }
 
   .stopwatch__controls {
